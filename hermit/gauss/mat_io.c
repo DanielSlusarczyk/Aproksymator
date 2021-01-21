@@ -7,6 +7,7 @@
  * Zwraca == NULL - podczas wczytywania wystapil blad
  */
 Matrix * readFromCall(int n, int m, double** dane){
+	int ir;
 	Matrix * mat=createMatrix(n, m);
 	if(mat!=NULL){
 		for(ir=0; ir<n; ir++){
@@ -14,7 +15,7 @@ Matrix * readFromCall(int n, int m, double** dane){
 		}
 	}
 	else{
-		(fprintf(stderr,"Gauss: wystąpił problem podczas tworzenia macierzy do obliczen o rozmiarach %d x %d", n, m);
+		fprintf(stderr,"Gauss: wystąpił problem podczas tworzenia macierzy do obliczen o rozmiarach %d x %d", n, m);
 		 }
 	return mat;
 

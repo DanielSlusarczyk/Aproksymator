@@ -107,7 +107,7 @@ main (int argc, char **argv)
     }
 
     make_spl (&pts, &spl);
-    printf("To sie wykonałem 0\n");
+
     if( spl.n > 0 )
 			write_spl (&spl, ouf);
 
@@ -137,7 +137,6 @@ main (int argc, char **argv)
   if (gpt != NULL && n > 1) { 
     FILE *gpf = fopen (gpt, "w");
     int i;
-    printf("Tu sie wykonałem 1\n");
     double dx;
 		if( fromX == 0 && toX == 0 ) { /* calculate plot range if it was not specified */
 			if( pts.n > 1 ) {
@@ -153,20 +152,17 @@ main (int argc, char **argv)
 		}
     dx = (toX - fromX) / (n - 1);
 
-    printf ("Tu sie wykonałem 2\n");
-
     if (gpf == NULL) {
       fprintf (stderr, "%s: can not write gnuplot file: %s\n\n", argv[0],
                gpt);
       exit (EXIT_FAILURE);
     }
-    
-    for (i = 0; i < n; i++){
+
+    for (i = 0; i < n; i++)
       fprintf (gpf, "%g %g\n", fromX + i * dx,
                value_spl (&spl, fromX + i * dx));
-    }
 
-   fclose (gpf);
+    fclose (gpf);
   }
 
   return 0;

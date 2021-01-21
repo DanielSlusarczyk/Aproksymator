@@ -1,6 +1,6 @@
 #include "points.h"
 #include <stdlib.h>
-#include <stdio.h>
+
 static int
 realloc_pts_failed (points_t * pts, int size)
 {
@@ -8,44 +8,41 @@ realloc_pts_failed (points_t * pts, int size)
     || realloc (pts->y, size * sizeof *pts->y) == NULL;
 }
 
-int read_pts_failed(FILE* inf, points_t* pts) {
-	int amount;
-	//The amount of points
-	double x, y;
-	//x, y co-ordinates
-	int tmp = 0;
+int
+read_pts_failed (FILE * inf, points_t * pts)
+{
+  int size;
+  double x, y;
 
-	if (fscanf(inf, "%d", &amount) != 1) {
-		return 1;
-	}
-	//The first number must determine the amount of points
+  if (pts->n == 0) {
+    pts->x = malloc (100 * sizeof *pts->x);
+    if (pts->x == NULL)
+      return 1;
+    pts->y = malloc (100 * sizeof *pts->y);
+    if (pts->y == NULL) {
+      free (pts->x);
+      return 1;
+    }
+    size = 100;
+  }
+  else
+    size = pts->n;
 
-	pts->x = (double*)malloc(amount * sizeof(double));
-	if (pts->x == NULL) {
-		return 1;
-	}
-	pts->y = (double*)malloc(amount * sizeof(double));
-	if (pts->y == NULL) {
-		free(pts->x);
-		return 1;
-	}
+  while (fscanf (inf, "%lf %lf", &x, &y) == 2) {
+    pts->x[pts->n] = x;
+    pts->y[pts->n] = y;
+    pts->n++;
+    if (!feof (inf) && pts->n == size) {
+      if (realloc_pts_failed (pts, 2 * size))
+        return 1;
+      else
+        size *= 2;
+    }
+  }
 
-	//Reading points...
-	while (fscanf(inf, "%lf %lf", &x, &y) == 2) {
-		pts->x[tmp] = x;
-		pts->y[tmp] = y;
-		pts->n++;
-		tmp++;
-		if (tmp > amount) {
-			printf("Zadeklarowano mniej punktow!\n");
-			return 1;
-		}
-	}
-	if (tmp != amount) {
-		printf("Zadeklarowano: %d, wczytano: %d\n", amount, tmp);
-	}
+  if (pts->n != size)
+    if (realloc_pts_failed (pts, pts->n))
+      return 1;
 
-	return 0;
-
-
+  return 0;
 }

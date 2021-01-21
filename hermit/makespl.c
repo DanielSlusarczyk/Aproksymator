@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "backsubst.h"
-#include "mat_io.h"
-#include "gauss.h"
+#include "gauss/backsubst.h"
+#include "gauss/mat_io.h"
+#include "gauss/gauss.h"
 
 #include "makespl.h"
 #include "hsplines.h"
@@ -42,9 +42,7 @@ mat_t* free_me(mat_t* X);
 //Frees up space
 
 void make_spl(points_t* pts, spline_t* spl) {
-
-	
-
+	int t=TEST > 0 ? 1 : 0;
 	//double nb= pts->n-3 >10 ? 10: pts->n-3;
 	int nb = 6;
 	//Nb- the accuracy of the approximation 2<n<7
@@ -67,7 +65,7 @@ void make_spl(points_t* pts, spline_t* spl) {
 		spl = NULL;
 		return;
 	}
-	
+ if(t==1){
 	printf("Zaalokowana pamiec:\n");
 	printf("Macierz D:\n");
 	print2screen(D);
@@ -79,7 +77,7 @@ void make_spl(points_t* pts, spline_t* spl) {
 	print2screen(DTD);
 	printf("Macierz DTf:\n");
 	print2screen(DTf);
-
+}
 
 	//Values of Matrix D:
 	int temp = 0;
@@ -94,6 +92,7 @@ void make_spl(points_t* pts, spline_t* spl) {
 	for (int i = 0; i < pts->n; i++) {
 		f = complete_matrix(f, pts->y[i], i, 0);
 	}
+if(t==1){
 	printf("Po wypelnieniu wartosciami:\n");
 	printf("Macierz A:\n");
 	print2screen(D);
@@ -101,14 +100,14 @@ void make_spl(points_t* pts, spline_t* spl) {
 	print2screen(f);
 	printf("Macierz A:\n");
 	print2screen(A);
-
+}
 	DTD = inverse_multiplication(D, DTD);
 	DTf = multiplication(D, f, DTf);
-
+if(t==1){
 	printf("Po skwadratowieniu macierzy:\n");
 	print2screen(DTD);
 	print2screen(DTf);
-
+}
 	//Calculating...
 	Matrix* An= readFromCall(DTD->n, DTD->m, DTD->v);
 	Matrix* bn= readFromCall(DTf->n, DTf->m, DTf->v);
@@ -135,16 +134,13 @@ void make_spl(points_t* pts, spline_t* spl) {
 
 	alloc_spl(spl, nb);
 
-	printf ("tu jestem\n");
 	//Writing...
 	spl->x[0]=pts->x[0];
 	spl->x[1]=pts->x[pts->n-1];
 	spl->n=2;
-	printf ("Tu\n");
 	for (int i=0; i<nb; i++){
 		spl->a[i]=x->data[i];
 	}
-printf("Tu jestem\n");	
 
 
 	free_me(D);
