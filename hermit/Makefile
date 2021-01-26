@@ -1,5 +1,5 @@
 hermit: main.o hsplines.o points.o makespl.o backsubst.o gauss.o mat_io.o
-	$(CC) -o hermit main.o hsplines.o points.o makespl.o backsubst.o gauss.o mat_io.o
+	$(CC) -o hermit main.o hsplines.o points.o makespl.o backsubst.o gauss.o mat_io.o -DTEST=0
 	rm *.o
 test: main.o hsplines.o points.o makespl1.o backsubst.o gauss.o mat_io.o
 	$(CC) -o testhermit main.o hsplines.o points.o makespl.o backsubst.o gauss.o mat_io.o -DTEST=1

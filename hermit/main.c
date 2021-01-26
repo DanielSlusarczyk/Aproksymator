@@ -118,10 +118,15 @@ main (int argc, char **argv)
       fprintf (stderr, "%s: can not read spline file: %s\n\n", argv[0], inp);
       exit (EXIT_FAILURE);
     }
-    if (read_spl (splf, &spl)) {
+    if (read_spl (splf, &spl)||fromX==toX) {
       fprintf (stderr, "%s: bad contents of spline file: %s\n\n", argv[0],
                inp);
       exit (EXIT_FAILURE);
+    }
+    else{
+	    spl.n=2;
+	    spl.x[0]=fromX;
+	    spl.x[1]=toX;
     }
   } else { /* ponts were not given nor spline was given -> it is an error */
     fprintf (stderr, usage, argv[0]);

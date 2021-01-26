@@ -5,9 +5,13 @@
 
 typedef struct {
 		int n;
+		//number of points
 		int nb;
+		//number of degrees of polynomial
 		int*x; 
+		//first and last value of x
 		double **a;
+		//values
 }spline_t;
 
 int alloc_spl( spline_t *spl, int n );

@@ -82,9 +82,7 @@ int eliminate(Matrix* mat, Matrix* b) {
 			return 1;
 	}
 
-	printf("\nPo eliminacji Gaussa:\n\n");
-	printToScreen(mat);
-	printToScreen(b);
+
 	return 0;
 }
 
