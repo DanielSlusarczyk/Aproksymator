@@ -1,15 +1,11 @@
 #include "points.h"
 #include <stdlib.h>
 
-#define MEMORY_BLOCK 20
-double*
+static int
 realloc_pts_failed (points_t * pts, int size)
 {
-  pts->x=realloc (pts->x, size * sizeof *pts->x);
-  pts->y=realloc (pts->y, size * sizeof *pts->y);
-  if(pts->x==NULL||pts->y==NULL)
-	  return NULL;
-  return pts->x;
+  return realloc (pts->x, size * sizeof *pts->x) == NULL
+    || realloc (pts->y, size * sizeof *pts->y) == NULL;
 }
 
 int
@@ -19,15 +15,15 @@ read_pts_failed (FILE * inf, points_t * pts)
   double x, y;
 
   if (pts->n == 0) {
-    pts->x = malloc (MEMORY_BLOCK * sizeof *pts->x);
+    pts->x = malloc (100 * sizeof *pts->x);
     if (pts->x == NULL)
       return 1;
-    pts->y = malloc (MEMORY_BLOCK * sizeof *pts->y);
+    pts->y = malloc (100 * sizeof *pts->y);
     if (pts->y == NULL) {
       free (pts->x);
       return 1;
     }
-    size = MEMORY_BLOCK;
+    size = 100;
   }
   else
     size = pts->n;
@@ -37,15 +33,15 @@ read_pts_failed (FILE * inf, points_t * pts)
     pts->y[pts->n] = y;
     pts->n++;
     if (!feof (inf) && pts->n == size) {
-      if (realloc_pts_failed (pts, size+MEMORY_BLOCK)==NULL)
+      if (realloc_pts_failed (pts, 2 * size))
         return 1;
       else
-        size +=MEMORY_BLOCK;
+        size *= 2;
     }
   }
 
   if (pts->n != size)
-    if (realloc_pts_failed (pts, pts->n)==NULL)
+    if (realloc_pts_failed (pts, pts->n))
       return 1;
 
   return 0;

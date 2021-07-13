@@ -19,6 +19,13 @@ double fun2( double x){
                                 return (1+r)*(0.001*(x-100)*(x-100)+200);
 
 }
+
+
+double fun3( double x){
+	                        double r= ((double)rand() - RAND_MAX/2.0)/RAND_MAX/5; // +-10%
+                                return (1+(r/1000))*(0.0000001*(x+400)*(x-500)*(x-160)*(x+40));
+
+}
 int main( int argc, char **argv ) {
 				if(argc==1){
 					printf("Uzycie:\n");
@@ -27,6 +34,7 @@ int main( int argc, char **argv ) {
 					printf("1 | 10x^4+5x^5 (ustawiona domyslnie)\n");
 					printf("2 | 0.0000001x^4+0.00001x^3+0.001x^2+0.01x\n");
 					printf("3 | 0.001(x-100)^2+200\n");
+					printf("4 | 0.0000001(x+400)(x-500)(x-160)(x+40)\n");
 					return 1;
 				}
 				int n= argc > 1 ? atoi( argv[1] ) : 100;
@@ -53,6 +61,12 @@ int main( int argc, char **argv ) {
 				else if(opcja==3){
 					                                for( i =0; i < n; i++ ) {
                                                                 fprintf( out, "%g %g\n", a+i*dx, fun2(a+i*dx) );
+                                }
+				}
+				else if(opcja=4){
+
+					                                for( i =0; i < n; i++ ) {
+                                                                fprintf( out, "%g %g\n", a+i*dx, fun3(a+i*dx) );
                                 }
 				}
 				fclose( out );
